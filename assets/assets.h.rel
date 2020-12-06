@@ -1,0 +1,17 @@
+XL2
+H 1 areas E global symbols
+S _sp_platV30 Ref0000
+S _sp_sword Ref0000
+S _sp_plat Ref0000
+S _sp_rojo Ref0000
+S .__.ABS. Def0000
+S _main_pal Ref0000
+S _sp_mainchar Ref0000
+S _sp_restart Ref0000
+S _sp_rojo_grande Ref0000
+S _sp_final Ref0000
+S _sp_bala Ref0000
+S _sp_redball Ref0000
+S _sp_char_multi1 Ref0000
+S _sp_char_multi2 Ref0000
+A _CODE size 0 flags 0 addr 0
