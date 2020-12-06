@@ -1,0 +1,3 @@
+.globl sys_collision_update_hero
+.globl sys_collision_update_hero2
+.globl sys_collision_update_dmg

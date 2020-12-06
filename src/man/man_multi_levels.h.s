@@ -1,0 +1,3 @@
+.globl man_level1_multi_init
+.globl man_level2_multi_init
+.globl man_level3_multi_init

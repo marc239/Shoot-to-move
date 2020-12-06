@@ -1,0 +1,1 @@
+.globl man_escape_update

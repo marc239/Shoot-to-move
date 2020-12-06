@@ -1,0 +1,2 @@
+.globl sys_death_update
+.globl sys_death_update_multi

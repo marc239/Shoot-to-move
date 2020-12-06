@@ -1,0 +1,2 @@
+.globl sys_ai_control_update
+.globl sys_ai_control_init
