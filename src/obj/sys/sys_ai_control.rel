@@ -1,0 +1,168 @@
+XL2
+H 1 areas 28 global symbols
+M cpct_keyboard
+S man_patrol_init Ref0000
+S set_level Ref0000
+S _main Ref0000
+S cpct_setPalette_asm Ref0000
+S cpct_scanKeyboard_f_asm Ref0000
+S cpct_isKeyPressed_asm Ref0000
+S patrol_invalid_move_x DefFFFFFFFF
+S man_entity_delete Ref0000
+S cpct_akp_stop_asm Ref0000
+S man_entity_create Ref0000
+S man_entity_init Ref0000
+S cpct_drawStringM0_asm Ref0000
+S man_patrol_get Ref0000
+S cpct_drawSprite_asm Ref0000
+S man_entity_crearBala Ref0000
+S set_individual Ref0000
+S man_entity_getArray Ref0000
+S menu_restart Ref0000
+S .__.ABS. Def0000
+S set_multiplayer Ref0000
+S start_game Ref0000
+S startCreditos Ref0000
+S inc_level Ref0000
+S cpct_setVideoMode_asm Ref0000
+S cpct_waitVSYNC_asm Ref0000
+S _song_principal Ref0000
+S cpct_akp_musicInit_asm Ref0000
+S cpct_disableFirmware_asm Ref0000
+S cpct_akp_musicPlay_asm Ref0000
+S cpct_drawSolidBox_asm Ref0000
+S menu_nivel_multi Ref0000
+S cpct_drawSpriteBlended_asm Ref0000
+S cpct_setDrawCharM0_asm Ref0000
+S cpct_getScreenPtr_asm Ref0000
+A _CODE size 10D flags 0 addr 0
+S sys_ai_control_update Def00B4
+S sys_ai_nothing Def0007
+S sys_ai_move_to Def0025
+S sys_ai_patrol Def00DF
+S sys_ai_stand_by Def0008
+S sys_ai_control_init Def0000
+T 00 00
+R 00 00 00 00
+T 00 00 22 B9 00 22 0A 00 C9
+R 00 00 00 00 00 03 00 00 00 06 00 00
+T 07 00
+R 00 00 00 00
+T 07 00 C9
+R 00 00 00 00
+T 08 00
+R 00 00 00 00
+T 08 00 FD 21 00 00 FD 7E 0C B7 C8 3E 00 CD 00 00
+R 00 00 00 00 02 0E 0C 00
+T 16 00 DD 75 13 DD 74 14 DD 36 0F 01 DD 36 0E 03
+R 00 00 00 00
+T 24 00 C9
+R 00 00 00 00
+T 25 00
+R 00 00 00 00
+T 25 00 DD 7E 10 D6 32 20 38
+R 00 00 00 00
+T 2C 00
+R 00 00 00 00
+T 2C 00 DD 36 10 00 DD 7E 02 FE 00 28 0F
+R 00 00 00 00
+T 37 00
+R 00 00 00 00
+T 37 00 DD 7E 02 D6 00 38 04
+R 00 00 00 00
+T 3E 00
+R 00 00 00 00
+T 3E 00 06 01 18 11
+R 00 00 00 00
+T 42 00
+R 00 00 00 00
+T 42 00 06 00 18 0D
+R 00 00 00 00
+T 46 00
+R 00 00 00 00
+T 46 00 DD 7E 03 D6 01 38 04
+R 00 00 00 00
+T 4D 00
+R 00 00 00 00
+T 4D 00 06 03 18 02
+R 00 00 00 00
+T 51 00
+R 00 00 00 00
+T 51 00 06 00
+R 00 00 00 00
+T 53 00
+R 00 00 00 00
+T 53 00 D5 DD 56 00 DD 5E 01 DD E5 0E 00 CD 00 00
+R 00 00 00 00 02 0E 0E 00
+T 61 00 DD E1 D1
+R 00 00 00 00
+T 64 00
+R 00 00 00 00
+T 64 00 DD 7E 10 3C DD 77 10 DD 36 03 00 DD 7E 0C
+R 00 00 00 00
+T 72 00 DD 96 00 30 06
+R 00 00 00 00
+T 77 00
+R 00 00 00 00
+T 77 00 DD 36 02 FF 18 0C
+R 00 00 00 00
+T 7D 00
+R 00 00 00 00
+T 7D 00 28 06 DD 36 02 01 18 04
+R 00 00 00 00
+T 85 00
+R 00 00 00 00
+T 85 00 DD 36 02 00
+R 00 00 00 00
+T 89 00
+R 00 00 00 00
+T 89 00 DD 7E 0D DD 96 01 30 06
+R 00 00 00 00
+T 91 00
+R 00 00 00 00
+T 91 00 DD 36 03 FE 18 1C
+R 00 00 00 00
+T 97 00
+R 00 00 00 00
+T 97 00 28 06 DD 36 03 02 18 14
+R 00 00 00 00
+T 9F 00
+R 00 00 00 00
+T 9F 00 DD 36 03 00 DD 7E 02 B7 20 0A DD 7E 0F DD
+R 00 00 00 00
+T AD 00 77 0E DD 36 0F 02
+R 00 00 00 00
+T B3 00
+R 00 00 00 00
+T B3 00 C9
+R 00 00 00 00
+T B4 00
+R 00 00 00 00
+T B4 00 32 D2 00 DD 21 00 00
+R 00 00 00 00 00 03 00 00
+T BB 00
+R 00 00 00 00
+T BB 00 DD 7E 0E FE 00 28 0F
+R 00 00 00 00
+T C2 00
+R 00 00 00 00
+T C2 00 FE 01 CC 08 00 FE 02 CC 25 00 FE 03 CC
+R 00 00 00 00 00 05 00 00 00 0A 00 00
+T CF 00 DF 00
+R 00 00 00 00 00 02 00 00
+T D1 00
+R 00 00 00 00
+T D1 00 3E 00 3D C8 32 D2 00 11 17 00 DD 19 18 DC
+R 00 00 00 00 00 07 00 00
+T DF 00
+R 00 00 00 00
+T DF 00 DD 6E 13 DD 66 14 7E FE FF 28 18 DD 77 0C
+R 00 00 00 00
+T ED 00 23 7E DD 77 0D 23 DD 75 13 DD 74 14 DD 36
+R 00 00 00 00
+T FB 00 0F 03 DD 36 0E 02 C9
+R 00 00 00 00
+T 02 01
+R 00 00 00 00
+T 02 01 23 7E 23 66 DD 77 13 DD 74 14 C9
+R 00 00 00 00

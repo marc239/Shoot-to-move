@@ -1,0 +1,62 @@
+-mjwx
+-i obj/shootToMove.ihx
+-b _CODE = 0x4000
+-b _DATA = 0x0000
+-u
+-k /home/marc/Documents/amstrad/cpctelera/cpctelera/tools/sdcc-3.6.8-r9946/bin/../share/sdcc/lib/z80
+-k /home/marc/Documents/amstrad/cpctelera/cpctelera/tools/sdcc-3.6.8-r9946/share/sdcc/lib/z80
+-l /home/marc/Documents/amstrad/cpctelera/cpctelera/cpctelera.lib
+-l z80
+obj/assets/sprites/restart.rel
+obj/assets/sprites/rojo_grande.rel
+obj/assets/sprites/suelo_rojo.rel
+obj/assets/sprites/final.rel
+obj/assets/sprites/platVertical30.rel
+obj/assets/sprites/suelo.rel
+obj/assets/sprites/plataforma30.rel
+obj/assets/sprites/bala.rel
+obj/assets/sprites/sword.rel
+obj/assets/sprites/redball.rel
+obj/assets/sprites/char_multi_2.rel
+obj/assets/sprites/char_multi_1.rel
+obj/assets/sprites/mainchar.rel
+obj/assets/music/musica_principal.rel
+obj/main.rel
+obj/main.h.rel
+obj/sys/sys_ai_control.rel
+obj/sys/sys_death.rel
+obj/sys/sys_death.h.rel
+obj/sys/sys_collision.rel
+obj/sys/sys_input.rel
+obj/sys/sys_input.h.rel
+obj/sys/sys_jump.h.rel
+obj/sys/sys_dash.h.rel
+obj/sys/sys_render.rel
+obj/sys/sys_jump.rel
+obj/sys/sys_physics.h.rel
+obj/sys/sys_physics.rel
+obj/sys/sys_dash.rel
+obj/sys/sys_collision.h.rel
+obj/sys/sys_ai_control.h.rel
+obj/sys/sys_render.h.rel
+obj/man/man_multi_levels.rel
+obj/man/man_game.rel
+obj/man/man_patrol.rel
+obj/man/man_one_levels.h.rel
+obj/man/man_one_levels.rel
+obj/man/man_patrol.h.rel
+obj/man/man_entity.h.rel
+obj/man/man_multiplayer.rel
+obj/man/man_escape.h.rel
+obj/man/man_game.h.rel
+obj/man/man_menu.rel
+obj/man/man_multiplayer.h.rel
+obj/man/man_entity.rel
+obj/man/man_menu.h.rel
+obj/man/man_escape.rel
+obj/man/man_multi_levels.h.rel
+obj/assets/assets.h.rel
+obj/cmp/entity.h.rel
+obj/cmp/array_structure.h.rel
+
+-e

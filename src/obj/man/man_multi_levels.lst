@@ -1,0 +1,781 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+Hexadecimal [16-Bits]
+
+
+
+                              1 ;; This file is part of SHOOT TO MOVE
+                              2 ;;  Copyright (C) 2020 Marc Landes Molla
+                              3 ;;
+                              4 ;;     SHOOT TO MOVE is free software: you can redistribute it and/or modify
+                              5 ;;     it under the terms of the GNU General Public License as published by
+                              6 ;;     the Free Software Foundation, either version 3 of the License, or
+                              7 ;;     (at your option) any later version.
+                              8 ;; 
+                              9 ;;     SHOOT TO MOVE is distributed in the hope that it will be useful,
+                             10 ;;     but WITHOUT ANY WARRANTY; without even the implied warranty of
+                             11 ;;     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                             12 ;;     GNU General Public License for more details.
+                             13 ;; 
+                             14 ;;     You should have received a copy of the GNU General Public License
+                             15 ;;     along with SHOOT TO MOVE  If not, see <https://www.gnu.org/licenses/>.
+                             16 
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+Hexadecimal [16-Bits]
+
+
+
+                             17 .include "man/man_game.h.s"
+                              1 .globl man_game_init
+                              2 .globl  man_game_update
+                              3 .globl man_game_render
+                              4 .globl man_game_update_multi
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
+Hexadecimal [16-Bits]
+
+
+
+                             18 .include "man/man_entity.h.s"
+                              1 .globl man_entity_init
+                              2 .globl man_entity_create
+                              3 .globl man_entity_getArray
+                              4 .globl man_entity_delete
+                              5 .globl man_entity_crearBala
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 4.
+Hexadecimal [16-Bits]
+
+
+
+                             19 .include "sys/sys_render.h.s"
+                              1 .globl sys_eren_init
+                              2 .globl sys_eren_update
+                              3 .globl sys_eren_borrar
+                              4 
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 5.
+Hexadecimal [16-Bits]
+
+
+
+                             20 .include "cmp/entity.h.s"
+                              1 ;; This file is part of SHOOT TO MOVE
+                              2 ;;  Copyright (C) 2020 Marc Landes Molla
+                              3 ;;
+                              4 ;;     SHOOT TO MOVE is free software: you can redistribute it and/or modify
+                              5 ;;     it under the terms of the GNU General Public License as published by
+                              6 ;;     the Free Software Foundation, either version 3 of the License, or
+                              7 ;;     (at your option) any later version.
+                              8 ;; 
+                              9 ;;     SHOOT TO MOVE is distributed in the hope that it will be useful,
+                             10 ;;     but WITHOUT ANY WARRANTY; without even the implied warranty of
+                             11 ;;     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                             12 ;;     GNU General Public License for more details.
+                             13 ;; 
+                             14 ;;     You should have received a copy of the GNU General Public License
+                             15 ;;     along with SHOOT TO MOVE  If not, see <https://www.gnu.org/licenses/>.
+                             16 
+                             17 
+                             18 ;;;ENTITY COMPONENT
+                             19 
+                             20 .macro DefineCmp_Entity _x, _y, _vx, _vy, _w, _h, _pspr, _aist, _col, _bal, _health, _mapa, _final
+                             21 	.db _x, _y
+                             22 	.db _vx, _vy
+                             23 	.db _w, _h
+                             24 	.dw _pspr
+                             25 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+                             26 	.db _col ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+                             27 	.db _bal
+                             28 	.db _health ;;entidades con salud = 0-> entidades que no sufren dmg
+                             29 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+                             30 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+                             31 	.db _aist 		;;AI - Status
+                             32 	.db _aist
+                             33 	.db 0x00
+                             34 	.db _mapa ;;0->  es mapa 1-> NO es mapa 
+                             35 	.db _final
+                             36 	.dw 0x0000			;; AI puntero a patrulla step
+                             37 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             38 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+                             39 .endm
+                             40 
+                     0000    41 e_x = 0
+                     0001    42 e_y = 1
+                     0002    43 e_vx = 2
+                     0003    44 e_vy = 3
+                     0004    45 e_w = 4
+                     0005    46 e_h = 5
+                     0006    47 e_pspr_l = 6
+                     0007    48 e_pspr_h = 7
+                     0008    49 e_prim = 8
+                     0009    50 e_col = 9 ;; 0 = no colisiona, 1 = collision, 2 = hace damage
+                     000A    51 e_bal = 10	;;1->hace dmg al heroe ;;2->hace dmg a los enemigos
+                     000B    52 e_health = 11
+                     000C    53 e_ai_aim_x = 12
+                     000D    54 e_ai_aim_y = 13
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 6.
+Hexadecimal [16-Bits]
+
+
+
+                     000E    55 e_ai_st = 14
+                     000F    56 e_ai_pre_st = 15
+                     0010    57 e_ai_contador = 16
+                     0011    58 e_mapa = 17
+                     0012    59 e_final = 18
+                     0013    60 e_ai_patrol_step_l = 19
+                     0014    61 e_ai_patrol_step_h = 20
+                     0015    62 e_lastVP_l = 21
+                     0016    63 e_lastVP_h = 22	
+                     0017    64 sizeof_e = 23
+                     FFFFFFE9    65 sizeof_e_neg = -23
+                             66 
+                             67 ;;ENTITY AI STATUS ENUM
+                             68 
+                     0000    69 e_ai_st_noAI = 0
+                     0001    70 e_ai_st_stand_by = 1
+                     0002    71 e_ai_st_move_to = 2
+                     0003    72 e_ai_st_patrol = 3
+                     0004    73 e_ai_st_noAIMulti = 4 ;;se utiliza para que las colisiones de balas funcionen en multijugador
+                             74 
+                             75 
+                             76 ;;COLISION STATUS
+                     0000    77 e_col_no = 0
+                     0001    78 e_col_si = 1
+                     0002    79 e_col_dmg = 2
+                             80 
+                             81 
+                             82 
+                             83 .macro DefineCmp_Entity_default
+                             84 	DefineCmp_Entity 0, 0, 0, 0, 1, 1, 0x0000, e_ai_st_noAI, 0, 0, 0, 1, 0
+                             85 .endm
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 7.
+Hexadecimal [16-Bits]
+
+
+
+                             21 .include "assets/assets.h.s"
+                              1 .globl _sp_mainchar
+                              2 .globl _sp_redball
+                              3 .globl _sp_sword
+                              4 .globl _main_pal
+                              5 .globl _sp_bala
+                              6 .globl _sp_plat
+                              7 .globl _sp_platV30
+                              8 .globl _sp_final
+                              9 .globl _sp_rojo
+                             10 .globl _sp_rojo_grande
+                             11 .globl _sp_restart
+                             12 .globl _sp_char_multi1
+                             13 .globl _sp_char_multi2
+                             14 
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 8.
+Hexadecimal [16-Bits]
+
+
+
+                             22 
+                             23 ;;ALL MUTLIPLAYER LEVELS
+                             24 
+   0000                      25 level1_multi_ent1: DefineCmp_Entity 0, 150, 0, 0, 4, 16, _sp_char_multi1, e_ai_st_noAI, 3, 0, 1, 1, 0
+   0000 00 96                 1 	.db 0, 150
+   0002 00 00                 2 	.db 0, 0
+   0004 04 10                 3 	.db 4, 16
+   0006 00 00                 4 	.dw _sp_char_multi1
+   0008 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   0009 03                    6 	.db 3 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   000A 00                    7 	.db 0
+   000B 01                    8 	.db 1 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   000C 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   000E 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+   000F 00                   12 	.db e_ai_st_noAI
+   0010 00                   13 	.db 0x00
+   0011 01                   14 	.db 1 ;;0->  es mapa 1-> NO es mapa 
+   0012 00                   15 	.db 0
+   0013 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   0015 CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+   0017                      26 level1_multi_ent2: DefineCmp_Entity 74, 150, 0, 0, 4, 16, _sp_char_multi2, e_ai_st_noAIMulti, 4, 0, 1, 1, 0
+   0017 4A 96                 1 	.db 74, 150
+   0019 00 00                 2 	.db 0, 0
+   001B 04 10                 3 	.db 4, 16
+   001D 00 00                 4 	.dw _sp_char_multi2
+   001F 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   0020 04                    6 	.db 4 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   0021 00                    7 	.db 0
+   0022 01                    8 	.db 1 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   0023 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   0025 04                   11 	.db e_ai_st_noAIMulti 		;;AI - Status
+   0026 04                   12 	.db e_ai_st_noAIMulti
+   0027 00                   13 	.db 0x00
+   0028 01                   14 	.db 1 ;;0->  es mapa 1-> NO es mapa 
+   0029 00                   15 	.db 0
+   002A 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   002C CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+   002E                      27 level1_multi_ent3: DefineCmp_Entity 30, 170, 0, 0, 2, 30, _sp_platV30, e_ai_st_noAI, 1, 0, 0, 0, 0
+   002E 1E AA                 1 	.db 30, 170
+   0030 00 00                 2 	.db 0, 0
+   0032 02 1E                 3 	.db 2, 30
+   0034 00 00                 4 	.dw _sp_platV30
+   0036 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   0037 01                    6 	.db 1 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   0038 00                    7 	.db 0
+   0039 00                    8 	.db 0 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   003A 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   003C 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+   003D 00                   12 	.db e_ai_st_noAI
+   003E 00                   13 	.db 0x00
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 9.
+Hexadecimal [16-Bits]
+
+
+
+   003F 00                   14 	.db 0 ;;0->  es mapa 1-> NO es mapa 
+   0040 00                   15 	.db 0
+   0041 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   0043 CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+   0045                      28 level1_multi_ent4: DefineCmp_Entity 50, 170, 0, 0, 2, 30, _sp_platV30, e_ai_st_noAI, 1, 0, 0, 0, 0
+   0045 32 AA                 1 	.db 50, 170
+   0047 00 00                 2 	.db 0, 0
+   0049 02 1E                 3 	.db 2, 30
+   004B 00 00                 4 	.dw _sp_platV30
+   004D 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   004E 01                    6 	.db 1 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   004F 00                    7 	.db 0
+   0050 00                    8 	.db 0 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   0051 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   0053 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+   0054 00                   12 	.db e_ai_st_noAI
+   0055 00                   13 	.db 0x00
+   0056 00                   14 	.db 0 ;;0->  es mapa 1-> NO es mapa 
+   0057 00                   15 	.db 0
+   0058 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   005A CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+                             29 ;;final
+                             30 
+   005C                      31 man_level1_multi_init::
+                             32 
+   005C 21 00 00      [10]   33 	ld hl, #level1_multi_ent1
+   005F CD 00 00      [17]   34 	call man_entity_create
+   0062 CD 00 00      [17]   35 	call sys_eren_borrar	
+   0065 21 17 00      [10]   36 	ld hl, #level1_multi_ent2
+   0068 CD 00 00      [17]   37 	call man_entity_create
+   006B 21 2E 00      [10]   38 	ld hl, #level1_multi_ent3
+   006E CD 00 00      [17]   39 	call man_entity_create
+   0071 21 45 00      [10]   40 	ld hl, #level1_multi_ent4
+   0074 CD 00 00      [17]   41 	call man_entity_create
+                             42 
+   0077 C9            [10]   43 	ret
+                             44 
+   0078                      45 level2_multi_ent1: DefineCmp_Entity 0, 150, 0, 0, 4, 16, _sp_char_multi1, e_ai_st_noAI, 3, 0, 1, 1, 0
+   0078 00 96                 1 	.db 0, 150
+   007A 00 00                 2 	.db 0, 0
+   007C 04 10                 3 	.db 4, 16
+   007E 00 00                 4 	.dw _sp_char_multi1
+   0080 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   0081 03                    6 	.db 3 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   0082 00                    7 	.db 0
+   0083 01                    8 	.db 1 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   0084 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   0086 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+   0087 00                   12 	.db e_ai_st_noAI
+   0088 00                   13 	.db 0x00
+   0089 01                   14 	.db 1 ;;0->  es mapa 1-> NO es mapa 
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 10.
+Hexadecimal [16-Bits]
+
+
+
+   008A 00                   15 	.db 0
+   008B 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   008D CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+   008F                      46 level2_multi_ent2: DefineCmp_Entity 74, 150, 0, 0, 4, 16, _sp_char_multi2, e_ai_st_noAIMulti, 4, 0, 1, 1, 0
+   008F 4A 96                 1 	.db 74, 150
+   0091 00 00                 2 	.db 0, 0
+   0093 04 10                 3 	.db 4, 16
+   0095 00 00                 4 	.dw _sp_char_multi2
+   0097 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   0098 04                    6 	.db 4 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   0099 00                    7 	.db 0
+   009A 01                    8 	.db 1 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   009B 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   009D 04                   11 	.db e_ai_st_noAIMulti 		;;AI - Status
+   009E 04                   12 	.db e_ai_st_noAIMulti
+   009F 00                   13 	.db 0x00
+   00A0 01                   14 	.db 1 ;;0->  es mapa 1-> NO es mapa 
+   00A1 00                   15 	.db 0
+   00A2 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   00A4 CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+   00A6                      47 level2_multi_ent3: DefineCmp_Entity 39, 70, 0, 0, 2, 30, _sp_platV30, e_ai_st_noAI, 1, 0, 0, 0, 0
+   00A6 27 46                 1 	.db 39, 70
+   00A8 00 00                 2 	.db 0, 0
+   00AA 02 1E                 3 	.db 2, 30
+   00AC 00 00                 4 	.dw _sp_platV30
+   00AE 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   00AF 01                    6 	.db 1 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   00B0 00                    7 	.db 0
+   00B1 00                    8 	.db 0 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   00B2 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   00B4 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+   00B5 00                   12 	.db e_ai_st_noAI
+   00B6 00                   13 	.db 0x00
+   00B7 00                   14 	.db 0 ;;0->  es mapa 1-> NO es mapa 
+   00B8 00                   15 	.db 0
+   00B9 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   00BB CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+   00BD                      48 level2_multi_ent4: DefineCmp_Entity 25, 100, 0, 0, 15, 8, _sp_plat, e_ai_st_noAI, 1, 0, 0, 0, 0
+   00BD 19 64                 1 	.db 25, 100
+   00BF 00 00                 2 	.db 0, 0
+   00C1 0F 08                 3 	.db 15, 8
+   00C3 00 00                 4 	.dw _sp_plat
+   00C5 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   00C6 01                    6 	.db 1 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   00C7 00                    7 	.db 0
+   00C8 00                    8 	.db 0 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   00C9 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   00CB 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+   00CC 00                   12 	.db e_ai_st_noAI
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 11.
+Hexadecimal [16-Bits]
+
+
+
+   00CD 00                   13 	.db 0x00
+   00CE 00                   14 	.db 0 ;;0->  es mapa 1-> NO es mapa 
+   00CF 00                   15 	.db 0
+   00D0 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   00D2 CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+   00D4                      49 level2_multi_ent5: DefineCmp_Entity 10, 100, 0, 0, 15, 8, _sp_plat, e_ai_st_noAI, 1, 0, 0, 0, 0
+   00D4 0A 64                 1 	.db 10, 100
+   00D6 00 00                 2 	.db 0, 0
+   00D8 0F 08                 3 	.db 15, 8
+   00DA 00 00                 4 	.dw _sp_plat
+   00DC 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   00DD 01                    6 	.db 1 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   00DE 00                    7 	.db 0
+   00DF 00                    8 	.db 0 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   00E0 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   00E2 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+   00E3 00                   12 	.db e_ai_st_noAI
+   00E4 00                   13 	.db 0x00
+   00E5 00                   14 	.db 0 ;;0->  es mapa 1-> NO es mapa 
+   00E6 00                   15 	.db 0
+   00E7 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   00E9 CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+   00EB                      50 level2_multi_ent6: DefineCmp_Entity 40, 100, 0, 0, 15, 8, _sp_plat, e_ai_st_noAI, 1, 0, 0, 0, 0
+   00EB 28 64                 1 	.db 40, 100
+   00ED 00 00                 2 	.db 0, 0
+   00EF 0F 08                 3 	.db 15, 8
+   00F1 00 00                 4 	.dw _sp_plat
+   00F3 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   00F4 01                    6 	.db 1 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   00F5 00                    7 	.db 0
+   00F6 00                    8 	.db 0 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   00F7 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   00F9 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+   00FA 00                   12 	.db e_ai_st_noAI
+   00FB 00                   13 	.db 0x00
+   00FC 00                   14 	.db 0 ;;0->  es mapa 1-> NO es mapa 
+   00FD 00                   15 	.db 0
+   00FE 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   0100 CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+   0102                      51 level2_multi_ent7: DefineCmp_Entity 39, 108, 0, 0, 2, 30, _sp_platV30, e_ai_st_noAI, 1, 0, 0, 0, 0
+   0102 27 6C                 1 	.db 39, 108
+   0104 00 00                 2 	.db 0, 0
+   0106 02 1E                 3 	.db 2, 30
+   0108 00 00                 4 	.dw _sp_platV30
+   010A 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   010B 01                    6 	.db 1 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   010C 00                    7 	.db 0
+   010D 00                    8 	.db 0 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   010E 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 12.
+Hexadecimal [16-Bits]
+
+
+
+   0110 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+   0111 00                   12 	.db e_ai_st_noAI
+   0112 00                   13 	.db 0x00
+   0113 00                   14 	.db 0 ;;0->  es mapa 1-> NO es mapa 
+   0114 00                   15 	.db 0
+   0115 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   0117 CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+   0119                      52 level2_multi_ent8: DefineCmp_Entity 55, 100, 0, 0, 15, 8, _sp_plat, e_ai_st_noAI, 1, 0, 0, 0, 0
+   0119 37 64                 1 	.db 55, 100
+   011B 00 00                 2 	.db 0, 0
+   011D 0F 08                 3 	.db 15, 8
+   011F 00 00                 4 	.dw _sp_plat
+   0121 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   0122 01                    6 	.db 1 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   0123 00                    7 	.db 0
+   0124 00                    8 	.db 0 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   0125 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   0127 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+   0128 00                   12 	.db e_ai_st_noAI
+   0129 00                   13 	.db 0x00
+   012A 00                   14 	.db 0 ;;0->  es mapa 1-> NO es mapa 
+   012B 00                   15 	.db 0
+   012C 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   012E CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+                             53 
+                             54 ;;final
+                             55 
+   0130                      56 man_level2_multi_init::
+                             57 
+   0130 21 78 00      [10]   58 	ld hl, #level2_multi_ent1
+   0133 CD 00 00      [17]   59 	call man_entity_create
+   0136 CD 00 00      [17]   60 	call sys_eren_borrar	
+   0139 21 8F 00      [10]   61 	ld hl, #level2_multi_ent2
+   013C CD 00 00      [17]   62 	call man_entity_create
+   013F 21 A6 00      [10]   63 	ld hl, #level2_multi_ent3
+   0142 CD 00 00      [17]   64 	call man_entity_create
+   0145 21 BD 00      [10]   65 	ld hl, #level2_multi_ent4
+   0148 CD 00 00      [17]   66 	call man_entity_create
+   014B 21 D4 00      [10]   67 	ld hl, #level2_multi_ent5
+   014E CD 00 00      [17]   68 	call man_entity_create
+   0151 21 EB 00      [10]   69 	ld hl, #level2_multi_ent6
+   0154 CD 00 00      [17]   70 	call man_entity_create
+   0157 21 02 01      [10]   71 	ld hl, #level2_multi_ent7
+   015A CD 00 00      [17]   72 	call man_entity_create
+   015D 21 19 01      [10]   73 	ld hl, #level2_multi_ent8
+   0160 CD 00 00      [17]   74 	call man_entity_create
+                             75 
+   0163 C9            [10]   76 	ret
+                             77 
+   0164                      78 level3_multi_ent1: DefineCmp_Entity 0, 150, 0, 0, 4, 16, _sp_char_multi1, e_ai_st_noAI, 3, 0, 1, 1, 0
+   0164 00 96                 1 	.db 0, 150
+   0166 00 00                 2 	.db 0, 0
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 13.
+Hexadecimal [16-Bits]
+
+
+
+   0168 04 10                 3 	.db 4, 16
+   016A 00 00                 4 	.dw _sp_char_multi1
+   016C 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   016D 03                    6 	.db 3 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   016E 00                    7 	.db 0
+   016F 01                    8 	.db 1 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   0170 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   0172 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+   0173 00                   12 	.db e_ai_st_noAI
+   0174 00                   13 	.db 0x00
+   0175 01                   14 	.db 1 ;;0->  es mapa 1-> NO es mapa 
+   0176 00                   15 	.db 0
+   0177 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   0179 CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+   017B                      79 level3_multi_ent2: DefineCmp_Entity 74, 150, 0, 0, 4, 16, _sp_char_multi2, e_ai_st_noAIMulti, 4, 0, 1, 1, 0
+   017B 4A 96                 1 	.db 74, 150
+   017D 00 00                 2 	.db 0, 0
+   017F 04 10                 3 	.db 4, 16
+   0181 00 00                 4 	.dw _sp_char_multi2
+   0183 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   0184 04                    6 	.db 4 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   0185 00                    7 	.db 0
+   0186 01                    8 	.db 1 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   0187 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   0189 04                   11 	.db e_ai_st_noAIMulti 		;;AI - Status
+   018A 04                   12 	.db e_ai_st_noAIMulti
+   018B 00                   13 	.db 0x00
+   018C 01                   14 	.db 1 ;;0->  es mapa 1-> NO es mapa 
+   018D 00                   15 	.db 0
+   018E 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   0190 CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+   0192                      80 level3_multi_ent3: DefineCmp_Entity 15, 0, 0, 0, 2, 30, _sp_platV30, e_ai_st_noAI, 1, 0, 0, 0, 0
+   0192 0F 00                 1 	.db 15, 0
+   0194 00 00                 2 	.db 0, 0
+   0196 02 1E                 3 	.db 2, 30
+   0198 00 00                 4 	.dw _sp_platV30
+   019A 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   019B 01                    6 	.db 1 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   019C 00                    7 	.db 0
+   019D 00                    8 	.db 0 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   019E 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   01A0 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+   01A1 00                   12 	.db e_ai_st_noAI
+   01A2 00                   13 	.db 0x00
+   01A3 00                   14 	.db 0 ;;0->  es mapa 1-> NO es mapa 
+   01A4 00                   15 	.db 0
+   01A5 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   01A7 CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+   01A9                      81 level3_multi_ent4: DefineCmp_Entity 15, 30, 0, 0, 2, 30, _sp_platV30, e_ai_st_noAI, 1, 0, 0, 0, 0
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 14.
+Hexadecimal [16-Bits]
+
+
+
+   01A9 0F 1E                 1 	.db 15, 30
+   01AB 00 00                 2 	.db 0, 0
+   01AD 02 1E                 3 	.db 2, 30
+   01AF 00 00                 4 	.dw _sp_platV30
+   01B1 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   01B2 01                    6 	.db 1 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   01B3 00                    7 	.db 0
+   01B4 00                    8 	.db 0 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   01B5 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   01B7 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+   01B8 00                   12 	.db e_ai_st_noAI
+   01B9 00                   13 	.db 0x00
+   01BA 00                   14 	.db 0 ;;0->  es mapa 1-> NO es mapa 
+   01BB 00                   15 	.db 0
+   01BC 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   01BE CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+   01C0                      82 level3_multi_ent5: DefineCmp_Entity 15, 110, 0, 0, 2, 30, _sp_platV30, e_ai_st_noAI, 1, 0, 0, 0, 0
+   01C0 0F 6E                 1 	.db 15, 110
+   01C2 00 00                 2 	.db 0, 0
+   01C4 02 1E                 3 	.db 2, 30
+   01C6 00 00                 4 	.dw _sp_platV30
+   01C8 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   01C9 01                    6 	.db 1 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   01CA 00                    7 	.db 0
+   01CB 00                    8 	.db 0 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   01CC 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   01CE 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+   01CF 00                   12 	.db e_ai_st_noAI
+   01D0 00                   13 	.db 0x00
+   01D1 00                   14 	.db 0 ;;0->  es mapa 1-> NO es mapa 
+   01D2 00                   15 	.db 0
+   01D3 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   01D5 CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+   01D7                      83 level3_multi_ent6: DefineCmp_Entity 15, 140, 0, 0, 2, 30, _sp_platV30, e_ai_st_noAI, 1, 0, 0, 0, 0
+   01D7 0F 8C                 1 	.db 15, 140
+   01D9 00 00                 2 	.db 0, 0
+   01DB 02 1E                 3 	.db 2, 30
+   01DD 00 00                 4 	.dw _sp_platV30
+   01DF 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   01E0 01                    6 	.db 1 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   01E1 00                    7 	.db 0
+   01E2 00                    8 	.db 0 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   01E3 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   01E5 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+   01E6 00                   12 	.db e_ai_st_noAI
+   01E7 00                   13 	.db 0x00
+   01E8 00                   14 	.db 0 ;;0->  es mapa 1-> NO es mapa 
+   01E9 00                   15 	.db 0
+   01EA 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   01EC CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 15.
+Hexadecimal [16-Bits]
+
+
+
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+   01EE                      84 level3_multi_ent7: DefineCmp_Entity 15, 170, 0, 0, 2, 30, _sp_platV30, e_ai_st_noAI, 1, 0, 0, 0, 0
+   01EE 0F AA                 1 	.db 15, 170
+   01F0 00 00                 2 	.db 0, 0
+   01F2 02 1E                 3 	.db 2, 30
+   01F4 00 00                 4 	.dw _sp_platV30
+   01F6 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   01F7 01                    6 	.db 1 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   01F8 00                    7 	.db 0
+   01F9 00                    8 	.db 0 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   01FA 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   01FC 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+   01FD 00                   12 	.db e_ai_st_noAI
+   01FE 00                   13 	.db 0x00
+   01FF 00                   14 	.db 0 ;;0->  es mapa 1-> NO es mapa 
+   0200 00                   15 	.db 0
+   0201 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   0203 CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+                             85 
+   0205                      86 level3_multi_ent8: DefineCmp_Entity 33, 100, 0, 0, 15, 8, _sp_plat, e_ai_st_noAI, 1, 0, 0, 0, 0
+   0205 21 64                 1 	.db 33, 100
+   0207 00 00                 2 	.db 0, 0
+   0209 0F 08                 3 	.db 15, 8
+   020B 00 00                 4 	.dw _sp_plat
+   020D 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   020E 01                    6 	.db 1 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   020F 00                    7 	.db 0
+   0210 00                    8 	.db 0 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   0211 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   0213 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+   0214 00                   12 	.db e_ai_st_noAI
+   0215 00                   13 	.db 0x00
+   0216 00                   14 	.db 0 ;;0->  es mapa 1-> NO es mapa 
+   0217 00                   15 	.db 0
+   0218 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   021A CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+                             87 
+   021C                      88 level3_multi_ent9: DefineCmp_Entity 63, 0, 0, 0, 2, 30, _sp_platV30, e_ai_st_noAI, 1, 0, 0, 0, 0
+   021C 3F 00                 1 	.db 63, 0
+   021E 00 00                 2 	.db 0, 0
+   0220 02 1E                 3 	.db 2, 30
+   0222 00 00                 4 	.dw _sp_platV30
+   0224 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   0225 01                    6 	.db 1 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   0226 00                    7 	.db 0
+   0227 00                    8 	.db 0 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   0228 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   022A 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+   022B 00                   12 	.db e_ai_st_noAI
+   022C 00                   13 	.db 0x00
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 16.
+Hexadecimal [16-Bits]
+
+
+
+   022D 00                   14 	.db 0 ;;0->  es mapa 1-> NO es mapa 
+   022E 00                   15 	.db 0
+   022F 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   0231 CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+   0233                      89 level3_multi_ent10: DefineCmp_Entity 63, 30, 0, 0, 2, 30, _sp_platV30, e_ai_st_noAI, 1, 0, 0, 0, 0
+   0233 3F 1E                 1 	.db 63, 30
+   0235 00 00                 2 	.db 0, 0
+   0237 02 1E                 3 	.db 2, 30
+   0239 00 00                 4 	.dw _sp_platV30
+   023B 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   023C 01                    6 	.db 1 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   023D 00                    7 	.db 0
+   023E 00                    8 	.db 0 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   023F 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   0241 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+   0242 00                   12 	.db e_ai_st_noAI
+   0243 00                   13 	.db 0x00
+   0244 00                   14 	.db 0 ;;0->  es mapa 1-> NO es mapa 
+   0245 00                   15 	.db 0
+   0246 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   0248 CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+   024A                      90 level3_multi_ent11: DefineCmp_Entity 63, 60, 0, 0, 2, 30, _sp_platV30, e_ai_st_noAI, 1, 0, 0, 0, 0
+   024A 3F 3C                 1 	.db 63, 60
+   024C 00 00                 2 	.db 0, 0
+   024E 02 1E                 3 	.db 2, 30
+   0250 00 00                 4 	.dw _sp_platV30
+   0252 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   0253 01                    6 	.db 1 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   0254 00                    7 	.db 0
+   0255 00                    8 	.db 0 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   0256 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   0258 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+   0259 00                   12 	.db e_ai_st_noAI
+   025A 00                   13 	.db 0x00
+   025B 00                   14 	.db 0 ;;0->  es mapa 1-> NO es mapa 
+   025C 00                   15 	.db 0
+   025D 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   025F CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+   0261                      91 level3_multi_ent12: DefineCmp_Entity 63, 90, 0, 0, 2, 30, _sp_platV30, e_ai_st_noAI, 1, 0, 0, 0, 0
+   0261 3F 5A                 1 	.db 63, 90
+   0263 00 00                 2 	.db 0, 0
+   0265 02 1E                 3 	.db 2, 30
+   0267 00 00                 4 	.dw _sp_platV30
+   0269 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   026A 01                    6 	.db 1 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   026B 00                    7 	.db 0
+   026C 00                    8 	.db 0 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   026D 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   026F 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 17.
+Hexadecimal [16-Bits]
+
+
+
+   0270 00                   12 	.db e_ai_st_noAI
+   0271 00                   13 	.db 0x00
+   0272 00                   14 	.db 0 ;;0->  es mapa 1-> NO es mapa 
+   0273 00                   15 	.db 0
+   0274 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   0276 CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+   0278                      92 level3_multi_ent13: DefineCmp_Entity 63, 120, 0, 0, 2, 30, _sp_platV30, e_ai_st_noAI, 1, 0, 0, 0, 0
+   0278 3F 78                 1 	.db 63, 120
+   027A 00 00                 2 	.db 0, 0
+   027C 02 1E                 3 	.db 2, 30
+   027E 00 00                 4 	.dw _sp_platV30
+   0280 00                    5 	.db 0x00 ;;COMPRUEBA SI ES LA PRIMERA VEZ QUE SE DIBUJA
+   0281 01                    6 	.db 1 ;;COLISION 0 -> no colisiona 1-> si colisiona 2-> bala/enemigo
+   0282 00                    7 	.db 0
+   0283 00                    8 	.db 0 ;;entidades con salud = 0-> entidades que no sufren dmg
+                              9 	;;en el caso de las entidades que hacen dmg, health es el dmg que causan
+   0284 00 00                10 	.db 0x00, 0x00 ;;AI-aim x,y(hacia donde va)
+   0286 00                   11 	.db e_ai_st_noAI 		;;AI - Status
+   0287 00                   12 	.db e_ai_st_noAI
+   0288 00                   13 	.db 0x00
+   0289 00                   14 	.db 0 ;;0->  es mapa 1-> NO es mapa 
+   028A 00                   15 	.db 0
+   028B 00 00                16 	.dw 0x0000			;; AI puntero a patrulla step
+   028D CC CC                17 	.dw 0xCCCC;;puntero a la ultima posicion de la memoria de video
+                             18 			;;sirve para borrar mas deprisa (asi se calcula solo una vez)
+                             93 ;;final
+                             94 
+   028F                      95 man_level3_multi_init::
+                             96 
+   028F 21 64 01      [10]   97 	ld hl, #level3_multi_ent1
+   0292 CD 00 00      [17]   98 	call man_entity_create
+   0295 CD 00 00      [17]   99 	call sys_eren_borrar	
+   0298 21 7B 01      [10]  100 	ld hl, #level3_multi_ent2
+   029B CD 00 00      [17]  101 	call man_entity_create
+   029E 21 92 01      [10]  102 	ld hl, #level3_multi_ent3
+   02A1 CD 00 00      [17]  103 	call man_entity_create
+   02A4 21 A9 01      [10]  104 	ld hl, #level3_multi_ent4
+   02A7 CD 00 00      [17]  105 	call man_entity_create
+   02AA 21 C0 01      [10]  106 	ld hl, #level3_multi_ent5
+   02AD CD 00 00      [17]  107 	call man_entity_create
+   02B0 21 D7 01      [10]  108 	ld hl, #level3_multi_ent6
+   02B3 CD 00 00      [17]  109 	call man_entity_create
+   02B6 21 EE 01      [10]  110 	ld hl, #level3_multi_ent7
+   02B9 CD 00 00      [17]  111 	call man_entity_create
+   02BC 21 05 02      [10]  112 	ld hl, #level3_multi_ent8
+   02BF CD 00 00      [17]  113 	call man_entity_create
+   02C2 21 1C 02      [10]  114 	ld hl, #level3_multi_ent9
+   02C5 CD 00 00      [17]  115 	call man_entity_create
+   02C8 21 33 02      [10]  116 	ld hl, #level3_multi_ent10
+   02CB CD 00 00      [17]  117 	call man_entity_create
+   02CE 21 4A 02      [10]  118 	ld hl, #level3_multi_ent11
+   02D1 CD 00 00      [17]  119 	call man_entity_create
+   02D4 21 61 02      [10]  120 	ld hl, #level3_multi_ent12
+   02D7 CD 00 00      [17]  121 	call man_entity_create
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 18.
+Hexadecimal [16-Bits]
+
+
+
+   02DA 21 78 02      [10]  122 	ld hl, #level3_multi_ent13
+   02DD CD 00 00      [17]  123 	call man_entity_create
+                            124 
+   02E0 C9            [10]  125 	ret
+                            126 
+                            127 
+                            128 
+                            129 

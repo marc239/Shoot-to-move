@@ -1,0 +1,11 @@
+XL2
+H 1 areas 8 global symbols
+S .__.ABS. Def0000
+S man_level1_init Ref0000
+S man_level2_init Ref0000
+S man_level3_init Ref0000
+S man_level4_init Ref0000
+S man_level5_init Ref0000
+S man_level6_init Ref0000
+S man_level7_init Ref0000
+A _CODE size 0 flags 0 addr 0

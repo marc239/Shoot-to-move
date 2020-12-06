@@ -1,0 +1,60 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+Hexadecimal [16-Bits]
+
+Symbol Table
+
+    .__.$$$.=  2710 L   |     .__.ABS.=  0000 G   |     .__.CPU.=  0000 L
+    .__.H$L.=  0000 L   |     _main_pa   **** GX  |     _sp_bala   **** GX
+    _sp_char   **** GX  |     _sp_char   **** GX  |     _sp_fina   **** GX
+    _sp_main   **** GX  |     _sp_plat   **** GX  |     _sp_plat   **** GX
+    _sp_redb   **** GX  |     _sp_rest   **** GX  |     _sp_rojo   **** GX
+    _sp_rojo   **** GX  |     _sp_swor   **** GX  |     e_ai_aim=  000C 
+    e_ai_aim=  000D     |     e_ai_con=  0010     |     e_ai_pat=  0014 
+    e_ai_pat=  0013     |     e_ai_pre=  000F     |     e_ai_st =  000E 
+    e_ai_st_=  0002     |     e_ai_st_=  0000     |     e_ai_st_=  0004 
+    e_ai_st_=  0003     |     e_ai_st_=  0001     |     e_bal   =  000A 
+    e_col   =  0009     |     e_col_dm=  0002     |     e_col_no=  0000 
+    e_col_si=  0001     |     e_final =  0012     |     e_h     =  0005 
+    e_health=  000B     |     e_lastVP=  0016     |     e_lastVP=  0015 
+    e_mapa  =  0011     |     e_prim  =  0008     |     e_pspr_h=  0007 
+    e_pspr_l=  0006     |     e_vx    =  0002     |     e_vy    =  0003 
+    e_w     =  0004     |     e_x     =  0000     |     e_y     =  0001 
+  0 level1_e   0000 R   |   0 level1_e   0017 R   |   0 level1_e   002E R
+  0 level1_e   0045 R   |   0 level2_e   0078 R   |   0 level2_e   0147 R
+  0 level2_e   015E R   |   0 level2_e   0175 R   |   0 level2_e   008F R
+  0 level2_e   00A6 R   |   0 level2_e   00BD R   |   0 level2_e   00D4 R
+  0 level2_e   00EB R   |   0 level2_e   0102 R   |   0 level2_e   0119 R
+  0 level2_e   0130 R   |   0 level3_e   01D8 R   |   0 level3_e   02A7 R
+  0 level3_e   01EF R   |   0 level3_e   0206 R   |   0 level3_e   021D R
+  0 level3_e   0234 R   |   0 level3_e   024B R   |   0 level3_e   0262 R
+  0 level3_e   0279 R   |   0 level3_e   0290 R   |   0 level4_e   02FE R
+  0 level4_e   03CD R   |   0 level4_e   0315 R   |   0 level4_e   032C R
+  0 level4_e   0343 R   |   0 level4_e   035A R   |   0 level4_e   0371 R
+  0 level4_e   0388 R   |   0 level4_e   039F R   |   0 level4_e   03B6 R
+  0 level5_e   0424 R   |   0 level5_e   04F3 R   |   0 level5_e   050A R
+  0 level5_e   043B R   |   0 level5_e   0452 R   |   0 level5_e   0469 R
+  0 level5_e   0480 R   |   0 level5_e   0497 R   |   0 level5_e   04AE R
+  0 level5_e   04C5 R   |   0 level5_e   04DC R   |   0 level6_e   0567 R
+  0 level6_e   061F R   |   0 level6_e   0636 R   |   0 level6_e   064D R
+  0 level6_e   057E R   |   0 level6_e   0595 R   |   0 level6_e   05AC R
+  0 level6_e   05C3 R   |   0 level6_e   05DA R   |   0 level6_e   05F1 R
+  0 level6_e   0608 R   |   0 level7_e   06AA R   |   0 level7_e   0779 R
+  0 level7_e   0790 R   |   0 level7_e   07A7 R   |   0 level7_e   06C1 R
+  0 level7_e   06D8 R   |   0 level7_e   06EF R   |   0 level7_e   0706 R
+  0 level7_e   071D R   |   0 level7_e   0734 R   |   0 level7_e   074B R
+  0 level7_e   0762 R   |     man_enti   **** GX  |     man_enti   **** GX
+    man_enti   **** GX  |     man_enti   **** GX  |     man_enti   **** GX
+    man_game   **** GX  |     man_game   **** GX  |     man_game   **** GX
+    man_game   **** GX  |   0 man_leve   005C GR  |   0 man_leve   018C GR
+  0 man_leve   02BE GR  |   0 man_leve   03E4 GR  |   0 man_leve   0521 GR
+  0 man_leve   0664 GR  |   0 man_leve   07BE GR  |     sizeof_e=  0017 
+    sizeof_e=  FFFFFFE9     |     sys_eren   **** GX  |     sys_eren   **** GX
+    sys_eren   **** GX
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+Hexadecimal [16-Bits]
+
+Area Table
+
+   0 _CODE      size  80A   flags    0
+

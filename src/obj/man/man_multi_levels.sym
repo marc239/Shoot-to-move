@@ -1,0 +1,43 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+Hexadecimal [16-Bits]
+
+Symbol Table
+
+    .__.$$$.=  2710 L   |     .__.ABS.=  0000 G   |     .__.CPU.=  0000 L
+    .__.H$L.=  0000 L   |     _main_pa   **** GX  |     _sp_bala   **** GX
+    _sp_char   **** GX  |     _sp_char   **** GX  |     _sp_fina   **** GX
+    _sp_main   **** GX  |     _sp_plat   **** GX  |     _sp_plat   **** GX
+    _sp_redb   **** GX  |     _sp_rest   **** GX  |     _sp_rojo   **** GX
+    _sp_rojo   **** GX  |     _sp_swor   **** GX  |     e_ai_aim=  000C 
+    e_ai_aim=  000D     |     e_ai_con=  0010     |     e_ai_pat=  0014 
+    e_ai_pat=  0013     |     e_ai_pre=  000F     |     e_ai_st =  000E 
+    e_ai_st_=  0002     |     e_ai_st_=  0000     |     e_ai_st_=  0004 
+    e_ai_st_=  0003     |     e_ai_st_=  0001     |     e_bal   =  000A 
+    e_col   =  0009     |     e_col_dm=  0002     |     e_col_no=  0000 
+    e_col_si=  0001     |     e_final =  0012     |     e_h     =  0005 
+    e_health=  000B     |     e_lastVP=  0016     |     e_lastVP=  0015 
+    e_mapa  =  0011     |     e_prim  =  0008     |     e_pspr_h=  0007 
+    e_pspr_l=  0006     |     e_vx    =  0002     |     e_vy    =  0003 
+    e_w     =  0004     |     e_x     =  0000     |     e_y     =  0001 
+  0 level1_m   0000 R   |   0 level1_m   0017 R   |   0 level1_m   002E R
+  0 level1_m   0045 R   |   0 level2_m   0078 R   |   0 level2_m   008F R
+  0 level2_m   00A6 R   |   0 level2_m   00BD R   |   0 level2_m   00D4 R
+  0 level2_m   00EB R   |   0 level2_m   0102 R   |   0 level2_m   0119 R
+  0 level3_m   0164 R   |   0 level3_m   0233 R   |   0 level3_m   024A R
+  0 level3_m   0261 R   |   0 level3_m   0278 R   |   0 level3_m   017B R
+  0 level3_m   0192 R   |   0 level3_m   01A9 R   |   0 level3_m   01C0 R
+  0 level3_m   01D7 R   |   0 level3_m   01EE R   |   0 level3_m   0205 R
+  0 level3_m   021C R   |     man_enti   **** GX  |     man_enti   **** GX
+    man_enti   **** GX  |     man_enti   **** GX  |     man_enti   **** GX
+    man_game   **** GX  |     man_game   **** GX  |     man_game   **** GX
+    man_game   **** GX  |   0 man_leve   005C GR  |   0 man_leve   0130 GR
+  0 man_leve   028F GR  |     sizeof_e=  0017     |     sizeof_e=  FFFFFFE9 
+    sys_eren   **** GX  |     sys_eren   **** GX  |     sys_eren   **** GX
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+Hexadecimal [16-Bits]
+
+Area Table
+
+   0 _CODE      size  2E1   flags    0
+

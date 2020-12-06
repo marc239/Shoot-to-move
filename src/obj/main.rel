@@ -1,0 +1,200 @@
+XL2
+H 2 areas 3F global symbols
+M cpct_keyboard
+S man_level1_multi_init Ref0000
+S man_level2_multi_init Ref0000
+S man_level3_multi_init Ref0000
+S man_multiplayer_input_update Ref0000
+S cpct_setPalette_asm Ref0000
+S cpct_scanKeyboard_f_asm Ref0000
+S cpct_isKeyPressed_asm Ref0000
+S cpct_setPALColour_asm Ref0000
+S man_menu_restart_init Ref0000
+S man_game_init Ref0000
+S sys_eren_update Ref0000
+S cpct_akp_stop_asm Ref0000
+S cpct_drawStringM0_asm Ref0000
+S cpct_drawSprite_asm Ref0000
+S sys_eren_borrar Ref0000
+S string_creditos Ref0000
+S man_game_render Ref0000
+S string_arcade Ref0000
+S man_menu_restart_update Ref0000
+S string_titulo Ref0000
+S man_game_update Ref0000
+S man_menu_inicial_init Ref0000
+S .__.ABS. Def0000
+S man_menu_creditos_init Ref0000
+S man_menu_nivel_init Ref0000
+S string_multi Ref0000
+S man_menu_restart_init_multi_1 Ref0000
+S man_game_update_multi Ref0000
+S man_menu_restart_init_multi_2 Ref0000
+S string_start Ref0000
+S man_menu_inicial_update Ref0000
+S string_cred_linea1 Ref0000
+S man_escape_update Ref0000
+S string_cred_linea2 Ref0000
+S man_menu_creditos_update Ref0000
+S man_menu_nivel_update Ref0000
+S cpct_setVideoMode_asm Ref0000
+S cpct_waitVSYNC_asm Ref0000
+S man_level1_init Ref0000
+S _song_principal Ref0000
+S man_level2_init Ref0000
+S man_level3_init Ref0000
+S cpct_akp_musicInit_asm Ref0000
+S man_level4_init Ref0000
+S cpct_disableFirmware_asm Ref0000
+S sys_eren_init Ref0000
+S man_level5_init Ref0000
+S cpct_akp_musicPlay_asm Ref0000
+S cpct_drawSolidBox_asm Ref0000
+S man_level6_init Ref0000
+S cpct_drawSpriteBlended_asm Ref0000
+S man_level7_init Ref0000
+S cpct_setDrawCharM0_asm Ref0000
+S cpct_getScreenPtr_asm Ref0000
+A _CODE size 10C flags 0 addr 0
+S set_level Def000A
+S _main Def001A
+S set_individual Def0014
+S menu_restart Def00EA
+S set_multiplayer Def000E
+S start_game Def004C
+S startCreditos Def003D
+S inc_level Def0002
+S menu_nivel_multi Def00DF
+A _DATA size 0 flags 0 addr 0
+T 00 00 01 01
+R 00 00 00 00
+T 02 00
+R 00 00 00 00
+T 02 00 3A 00 00 3C 32 00 00 C9
+R 00 00 00 00 00 03 00 00 00 07 00 00
+T 0A 00
+R 00 00 00 00
+T 0A 00 32 00 00 C9
+R 00 00 00 00 00 03 00 00
+T 0E 00
+R 00 00 00 00
+T 0E 00 3E 02 32 01 00 C9
+R 00 00 00 00 00 05 00 00
+T 14 00
+R 00 00 00 00
+T 14 00 3E 01 32 01 00 C9
+R 00 00 00 00 00 05 00 00
+T 1A 00
+R 00 00 00 00
+T 1A 00 CD 00 00 F1 21 10 00 CD 00 00 CD 00 00 CD
+R 00 00 00 00 02 03 2C 00 02 0A 07 00 02 0D 2D 00
+T 28 00 00 00 CD 00 00 3E 01 32 00 00 32
+R 00 00 00 00 02 02 15 00 02 05 0B 00 00 0A 00 00
+T 33 00 01 00
+R 00 00 00 00 00 02 00 00
+T 35 00
+R 00 00 00 00
+T 35 00 CD 00 00 CD 00 00 18 F8
+R 00 00 00 00 02 03 25 00 02 06 1E 00
+T 3D 00
+R 00 00 00 00
+T 3D 00 F1 CD 00 00
+R 00 00 00 00 02 04 17 00
+T 41 00
+R 00 00 00 00
+T 41 00 CD 00 00 CD 00 00 CD 00 00 18 F5
+R 00 00 00 00 02 03 25 00 02 06 22 00 02 09 20 00
+T 4C 00
+R 00 00 00 00
+T 4C 00 F1 11 00 00 CD 00 00 CD 00 00 3A
+R 00 00 00 00 02 04 27 00 02 07 2A 00 02 0A 09 00
+T 57 00 01 00 FE 01 20 3C 3A 00 00 FE 01 20 03 CD
+R 00 00 00 00 00 02 00 00 00 09 00 00
+T 65 00 00 00
+R 00 00 00 00 02 02 26 00
+T 67 00
+R 00 00 00 00
+T 67 00 FE 02 20 03 CD 00 00
+R 00 00 00 00 02 07 28 00
+T 6E 00
+R 00 00 00 00
+T 6E 00 FE 03 20 03 CD 00 00
+R 00 00 00 00 02 07 29 00
+T 75 00
+R 00 00 00 00
+T 75 00 FE 04 20 03 CD 00 00
+R 00 00 00 00 02 07 2B 00
+T 7C 00
+R 00 00 00 00
+T 7C 00 FE 05 20 03 CD 00 00
+R 00 00 00 00 02 07 2E 00
+T 83 00
+R 00 00 00 00
+T 83 00 FE 06 20 03 CD 00 00
+R 00 00 00 00 02 07 31 00
+T 8A 00
+R 00 00 00 00
+T 8A 00 FE 07 20 03 CD 00 00
+R 00 00 00 00 02 07 33 00
+T 91 00
+R 00 00 00 00
+T 91 00 FE 08 20 02 18 83
+R 00 00 00 00
+T 97 00
+R 00 00 00 00
+T 97 00 18 24
+R 00 00 00 00
+T 99 00
+R 00 00 00 00
+T 99 00 3A 00 00 FE 01 20 05 CD 00 00 18 29
+R 00 00 00 00 00 03 00 00 02 0A 00 00
+T A5 00
+R 00 00 00 00
+T A5 00 3A 00 00 FE 02 20 05 CD 00 00 18 1D
+R 00 00 00 00 00 03 00 00 02 0A 01 00
+T B1 00
+R 00 00 00 00
+T B1 00 3A 00 00 FE 03 20 05 CD 00 00 18 11
+R 00 00 00 00 00 03 00 00 02 0A 02 00
+T BD 00
+R 00 00 00 00
+T BD 00
+R 00 00 00 00
+T BD 00 CD 00 00 CD 00 00 CD 00 00 CD
+R 00 00 00 00 02 03 14 00 02 06 25 00 02 09 10 00
+T C7 00 00 00 CD 00 00 18 EF
+R 00 00 00 00 02 02 2F 00 02 05 20 00
+T CE 00
+R 00 00 00 00
+T CE 00 CD 00 00 CD 00 00 CD 00 00 CD
+R 00 00 00 00 02 03 1B 00 02 06 25 00 02 09 10 00
+T D8 00 00 00 CD 00 00 18 EF
+R 00 00 00 00 02 02 2F 00 02 05 20 00
+T DF 00
+R 00 00 00 00
+T DF 00 CD 00 00 CD 00 00
+R 00 00 00 00 02 03 2D 00 02 06 18 00
+T E5 00
+R 00 00 00 00
+T E5 00 CD 00 00 18 FB
+R 00 00 00 00 02 03 23 00
+T EA 00
+R 00 00 00 00
+T EA 00 F1 78 FE 01 20 05 CD 00 00 18 0C
+R 00 00 00 00 02 09 1A 00
+T F5 00
+R 00 00 00 00
+T F5 00 FE 02 20 05 CD 00 00 18 03
+R 00 00 00 00 02 07 1C 00
+T FE 00
+R 00 00 00 00
+T FE 00 CD 00 00
+R 00 00 00 00 02 03 08 00
+T 01 01
+R 00 00 00 00
+T 01 01 CD 00 00
+R 00 00 00 00 02 03 0B 00
+T 04 01
+R 00 00 00 00
+T 04 01 CD 00 00 CD 00 00 18 F8
+R 00 00 00 00 02 03 12 00 02 06 20 00
